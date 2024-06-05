@@ -3,92 +3,60 @@
 
 using namespace std;
 
-// Employee class implementation
+employee::employee(const string &name, int employeeID, const string &position, double salary, const string &shift)
+    : name(name), employeeID(employeeID), position(position), salary(salary), shift(shift) {}
 
-Employee::Employee(string name, int age, string position, double salary)
-{
-    this->name = name;
-    this->age = age;
-    this->position = position;
-    this->salary = salary;
-}
+employee::~employee() {}
 
-void Employee::work()
-{
-    cout << "Working..." << endl;
-}
-
-void Employee::takeBreak()
-{
-    cout << "Taking a break..." << endl;
-}
-
-double Employee::getSalary()
-{
-    return salary;
-}
-
-void Employee::setName(string name)
-{
-    this->name = name;
-}
-
-void Employee::setAge(int age)
-{
-    this->age = age;
-}
-
-void Employee::setPosition(string position)
-{
-    this->position = position;
-}
-
-void Employee::setSalary(double salary)
-{
-    this->salary = salary;
-}
-
-string Employee::getName()
-{
+string employee::getName() const {
     return name;
 }
 
-int Employee::getAge()
-{
-    return age;
+void employee::setName(const string &name) {
+    this->name = name;
 }
 
-string Employee::getPosition()
-{
+int employee::getEmployeeID() const {
+    return employeeID;
+}
+
+void employee::setEmployeeID(int employeeID) {
+    this->employeeID = employeeID;
+}
+
+string employee::getPosition() const {
     return position;
 }
 
-// Zookeeper class implementation
-
-Zookeeper::Zookeeper(string name, int age, string position, double salary)
-    : Employee(name, age, position, salary) {}
-
-void Zookeeper::feedAnimals()
-{
-    cout << "Feeding animals..." << endl;
+void employee::setPosition(const string &position) {
+    this->position = position;
 }
 
-// Veterinarian class implementation
-
-Veterinarian::Veterinarian(string name, int age, string position, double salary)
-    : Employee(name, age, position, salary) {}
-
-void Veterinarian::treatAnimal()
-{
-    cout << "Treating an animal..." << endl;
+double employee::getSalary() const {
+    return salary;
 }
 
-// Cashier class implementation
+void employee::setSalary(double salary) {
+    this->salary = salary;
+}
 
-Cashier::Cashier(string name, int age, string position, double salary)
-    : Employee(name, age, position, salary) {}
+string employee::getShift() const {
+    return shift;
+}
 
-void Cashier::processPayment()
-{
-    cout << "Processing payment..." << endl;
+void employee::setShift(const string &shift) {
+    this->shift = shift;
+}
+
+void employee::work() const {
+    // Default implementation (can be overridden)
+    cout << name << " is working as " << position << "." << endl;
+}
+
+string employee::getDetails() const {
+    return "Name: " + name + "\nID: " + to_string(employeeID) + "\nPosition: " + position + "\nSalary: " + to_string(salary) + "\nShift: " + shift;
+}
+
+void employee::takeBreak() const {
+    cout << name << " is taking a break." << endl;
 }

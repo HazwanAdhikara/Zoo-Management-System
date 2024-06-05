@@ -2,63 +2,42 @@
 #define EMPLOYEE_H
 
 #include <string>
+#include <vector>
 
-// Base class
-class Employee
-{
+using namespace std;
+
+class employee {
+protected:
+    string name;
+    int employeeID;
+    string position;
+    double salary;
+    string shift;
+
 public:
-    // Constructor
-    Employee(std::string name, int age, std::string position, double salary);
+    employee(const string &name, int employeeID, const string &position, double salary, const string &shift);
 
-    // Methods
-    virtual void work();
-    void takeBreak();
-    double getSalary();
+    virtual ~employee();
 
-    // Setters
-    void setName(std::string name);
-    void setAge(int age);
-    void setPosition(std::string position);
+    string getName() const;
+    void setName(const string &name);
+
+    int getEmployeeID() const;
+    void setEmployeeID(int employeeID);
+
+    string getPosition() const;
+    void setPosition(const string &position);
+
+    double getSalary() const;
     void setSalary(double salary);
 
-    // Getters
-    std::string getName();
-    int getAge();
-    std::string getPosition();
+    string getShift() const;
+    void setShift(const string &shift);
 
-protected:
-    std::string name;
-    int age;
-    std::string position;
-    double salary;
-};
+    virtual void work() const;
+    virtual string getDetails() const;
 
-// Derived classes
-class Zookeeper : public Employee
-{
-public:
-    Zookeeper(std::string name, int age, std::string position, double salary);
-
-    // Additional methods specific to Zookeeper
-    void feedAnimals();
-};
-
-class Veterinarian : public Employee
-{
-public:
-    Veterinarian(std::string name, int age, std::string position, double salary);
-
-    // Additional methods specific to Veterinarian
-    void treatAnimal();
-};
-
-class Cashier : public Employee
-{
-public:
-    Cashier(std::string name, int age, std::string position, double salary);
-
-    // Additional methods specific to Cashier
-    void processPayment();
+    virtual void takeBreak() const;
 };
 
 #endif // EMPLOYEE_H
