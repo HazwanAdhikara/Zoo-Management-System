@@ -2,42 +2,73 @@
 #define EMPLOYEE_H
 
 #include <string>
-#include <vector>
-
-using namespace std;
 
 class employee
 {
 protected:
-    string name;
+    std::string name;
     int employeeID;
-    string position;
-    double salary;
-    string shift;
+    std::string position;
+    std::string salary;  // Changed to string
+    std::string shift;
+    bool onBreak;  // New member variable to track break status
 
 public:
-    employee(const string &name, int employeeID, const string &position, double salary, const string &shift);
+    employee(const std::string &name, int employeeID, const std::string &position, const std::string &salary, const std::string &shift);
     virtual ~employee();
 
-    string getName() const;
-    void setName(const string &name);
+    std::string getName() const;
+    void setName(const std::string &name);
 
     int getEmployeeID() const;
     void setEmployeeID(int employeeID);
 
-    string getPosition() const;
-    void setPosition(const string &position);
+    std::string getPosition() const;
+    void setPosition(const std::string &position);
 
-    double getSalary() const;
-    void setSalary(double salary);
+    std::string getSalary() const;
+    void setSalary(const std::string &salary);
 
-    string getShift() const;
-    void setShift(const string &shift);
+    std::string getSalaryWithCurrency() const;
+
+    std::string getShift() const;
+    void setShift(const std::string &shift);
 
     virtual void work() const;
-    virtual string getDetails() const;
+    virtual std::string getDetails() const;
 
-    virtual void takeBreak() const;
+    // Method to take a break
+    void takeBreak();
+
+    // Method to check if the employee is on break
+    bool isOnBreak() const;
 };
 
-#endif
+class Zookeeper : public employee
+{
+public:
+    Zookeeper(const std::string &name, int employeeID, const std::string &position, const std::string &salary, const std::string &shift);
+    void feedAnimal() const;
+    void work() const override;
+    std::string getDetails() const override;
+};
+
+class Manager : public employee
+{
+public:
+    Manager(const std::string &name, int employeeID, const std::string &position, const std::string &salary, const std::string &shift);
+    void manageStaff() const;
+    void work() const override;
+    std::string getDetails() const override;
+};
+
+class Veterinarian : public employee
+{
+public:
+    Veterinarian(const std::string &name, int employeeID, const std::string &position, const std::string &salary, const std::string &shift);
+    void treatAnimal() const;
+    void work() const override;
+    std::string getDetails() const override;
+};
+
+#endif // EMPLOYEE_H

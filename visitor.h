@@ -4,32 +4,50 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
-class Visitor
-{
-private:
-    string name;
+// Base Visitor class
+class Visitor {
+protected:
+    std::string name;
     int age;
-    string ticketType;
-    string entryTime;
+    std::string ticketType;
+    std::string entryTime;
 
 public:
-    Visitor(string name, int age, string ticketType, string entryTime);
+    Visitor(std::string name, int age, std::string ticketType, std::string entryTime);
 
-    void setName(string name);
+    void setName(std::string name);
     void setAge(int age);
-    void setTicketType(string ticketType);
-    void setEntryTime(string entryTime);
+    void setTicketType(std::string ticketType);
+    void setEntryTime(std::string entryTime);
 
-    string getName() const;
+    std::string getName() const;
     int getAge() const;
-    string getTicketType() const;
-    string getEntryTime() const;
+    std::string getTicketType() const;
+    std::string getEntryTime() const;
 
-    void enterZoo();
-    void observeAnimals();
-    void buySouvenirs();
+    virtual void enterZoo() const;
+    virtual void observeAnimals() const;
+    virtual void buySouvenirs() const;
 };
 
-#endif
+// Child Visitor class
+class ChildVisitor : public Visitor {
+public:
+    ChildVisitor(std::string name, int age, std::string ticketType, std::string entryTime);
+
+    void enterZoo() const override;
+    void observeAnimals() const override;
+    void buySouvenirs() const override;
+};
+
+// Adult Visitor class
+class AdultVisitor : public Visitor {
+public:
+    AdultVisitor(std::string name, int age, std::string ticketType, std::string entryTime);
+
+    void enterZoo() const override;
+    void observeAnimals() const override;
+    void buySouvenirs() const override;
+};
+
+#endif // VISITOR_H

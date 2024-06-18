@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <memory>
 #include "animal.h"
 #include "cage.h"
 #include "employee.h"
@@ -26,10 +27,11 @@ void menu()
     cout << "option 11 : Add Employee \n";
     cout << "option 12 : Remove Employee \n";
     cout << "option 13 : Search Employee \n";
-    cout << "option 14 : Add Visitor \n";
-    cout << "option 15 : Remove Visitor \n";
-    cout << "option 16 : Search Visitor \n";
-    cout << "option 17 : Sorting \n";
+    cout << "option 14 : Break for Employee \n";
+    cout << "option 15 : Add Visitor \n";
+    cout << "option 16 : Remove Visitor \n";
+    cout << "option 17 : Search Visitor \n";
+    cout << "option 18 : Sorting \n";
     cout << "option 0 : Exit \n";
 }
 
@@ -314,20 +316,63 @@ void searchCage(const vector<Cage *> &cages)
 }
 
 // Employees
-void showAllEmployees(const vector<employee *> &employees)
+void initializeEmployees(vector<unique_ptr<employee>> &employees)
 {
-    for (employee *emp : employees)
-    {
-        cout << emp->getDetails() << endl;
+    cout << "\n"
+         << endl;
+    employees.push_back(unique_ptr<employee>(new Zookeeper("Alice", 1, "Zookeeper", "30000", "Day")));
+    employees.push_back(unique_ptr<employee>(new Veterinarian("Bob", 2, "Veterinarian", "50000", "Night")));
+    employees.push_back(unique_ptr<employee>(new Manager("Charlie", 3, "Manager", "70000", "Day")));
+}
+
+void showAllEmployees(const vector<unique_ptr<employee>>& employees) {
+    if (employees.empty()) {
+        cout << "No employees in the zoo." << endl;
+        return;
+    }
+
+    for (const auto& emp : employees) {
+        cout << "> " << emp->getName() << " (" << emp->getPosition() << ")" << endl;
+        emp->work();
+        if (emp->isOnBreak()) {
+            cout << " -> is taking a break" << endl;
+        }
+        cout << endl;
     }
 }
 
-void addEmployee(vector<employee *> &employees)
-{
-    string name, position, shift;
-    int employeeID;
-    double salary;
+void chooseEmployeesForBreak(vector<unique_ptr<employee>>& employees) {
+    int count;
+    cout << "Enter the number of employees to take a break: ";
+    cin >> count;
 
+    if (count <= 0 || count > employees.size()) {
+        cout << "Invalid number of employees." << endl;
+        return;
+    }
+
+    cout << "Select " << count << " employees for a break:" << endl;
+    for (size_t i = 0; i < count; ++i) {
+        int index;
+        cout << i + 1 << ". Enter the index of employee: ";
+        cin >> index;
+
+        if (index >= 1 && index <= employees.size()) {
+            employees[index - 1]->takeBreak();
+        } else {
+            cout << "Invalid index." << endl;
+            --i;
+        }
+    }
+}
+
+void addEmployee(vector<unique_ptr<employee>> &employees)
+{
+    string name, position, shift, salary;
+    int employeeID, type;
+
+    cout << "Enter employee type (1-Zookeeper, 2-Veterinarian, 3-Manager): ";
+    cin >> type;
     cout << "Enter name: ";
     cin >> ws;
     getline(cin, name);
@@ -337,26 +382,41 @@ void addEmployee(vector<employee *> &employees)
     cin >> ws;
     getline(cin, position);
     cout << "Enter salary: ";
-    cin >> salary;
+    cin >> ws;
+    getline(cin, salary);
     cout << "Enter shift: ";
     cin >> ws;
     getline(cin, shift);
 
-    employees.push_back(new employee(name, employeeID, position, salary, shift));
+    switch (type)
+    {
+    case 1:
+        employees.push_back(unique_ptr<employee>(new Zookeeper(name, employeeID, position, salary, shift)));
+        break;
+    case 2:
+        employees.push_back(unique_ptr<employee>(new Veterinarian(name, employeeID, position, salary, shift)));
+        break;
+    case 3:
+        employees.push_back(unique_ptr<employee>(new Manager(name, employeeID, position, salary, shift)));
+        break;
+    default:
+        cout << "Invalid type!" << endl;
+        return;
+    }
+    cout << "Employee added." << endl;
 }
 
-void removeEmployee(vector<employee *> &employees)
+void removeEmployee(vector<unique_ptr<employee>> &employees)
 {
     int employeeID;
     cout << "Enter the employee ID to remove: ";
     cin >> employeeID;
 
-    auto it = remove_if(employees.begin(), employees.end(), [&](employee *emp)
+    auto it = remove_if(employees.begin(), employees.end(), [&](const unique_ptr<employee> &emp)
                         { return emp->getEmployeeID() == employeeID; });
 
     if (it != employees.end())
     {
-        delete *it;
         employees.erase(it, employees.end());
         cout << "Employee removed." << endl;
     }
@@ -366,13 +426,13 @@ void removeEmployee(vector<employee *> &employees)
     }
 }
 
-void searchEmployee(const vector<employee *> &employees)
+void searchEmployee(const vector<unique_ptr<employee>> &employees)
 {
     int employeeID;
     cout << "Enter the employee ID to search: ";
     cin >> employeeID;
 
-    auto it = find_if(employees.begin(), employees.end(), [&](employee *emp)
+    auto it = find_if(employees.begin(), employees.end(), [&](const unique_ptr<employee> &emp)
                       { return emp->getEmployeeID() == employeeID; });
 
     if (it != employees.end())
@@ -385,84 +445,137 @@ void searchEmployee(const vector<employee *> &employees)
     }
 }
 
-// Visitors
-void showAllVisitors(const vector<Visitor> &visitors)
+void initializeVisitors(std::vector<Visitor *> &visitors)
 {
-    for (const Visitor &visitor : visitors)
+    visitors.push_back(new ChildVisitor("Alice", 8, "Child Ticket", "09:00"));
+    visitors.push_back(new ChildVisitor("Bob", 7, "Child Ticket", "09:30"));
+    visitors.push_back(new AdultVisitor("Charlie", 35, "Adult Ticket", "10:00"));
+    visitors.push_back(new AdultVisitor("Diana", 40, "Adult Ticket", "10:30"));
+}
+
+void showAllVisitors(const std::vector<Visitor *> &visitors)
+{
+    if (visitors.empty())
     {
-        cout << "Name: " << visitor.getName() << "\nAge: " << visitor.getAge() << "\nTicket Type: " << visitor.getTicketType() << "\nEntry Time: " << visitor.getEntryTime() << endl;
+        std::cout << "No visitors in the zoo." << std::endl;
+        return;
+    }
+
+    for (const Visitor *visitor : visitors)
+    {
+        std::cout << "Name: " << visitor->getName() << "\nAge: " << visitor->getAge()
+                  << "\nTicket Type: " << visitor->getTicketType() << "\nEntry Time: " << visitor->getEntryTime() << std::endl;
+        visitor->enterZoo();
+        visitor->observeAnimals();
+        visitor->buySouvenirs();
+        std::cout << std::endl;
     }
 }
 
-void addVisitor(vector<Visitor> &visitors)
+// Function to add a new visitor
+void addVisitor(std::vector<Visitor *> &visitors)
 {
-    string name, ticketType, entryTime;
+    std::string name, ticketType, entryTime;
     int age;
 
-    cout << "Enter name: ";
-    cin >> ws;
-    getline(cin, name);
-    cout << "Enter age: ";
-    cin >> age;
-    cout << "Enter ticket type: ";
-    cin >> ws;
-    getline(cin, ticketType);
-    cout << "Enter entry time: ";
-    getline(cin, entryTime);
+    std::cout << "Enter name: ";
+    std::cin >> std::ws;
+    std::getline(std::cin, name);
+    std::cout << "Enter age: ";
+    std::cin >> age;
+    std::cout << "Enter ticket type: ";
+    std::cin >> std::ws;
+    std::getline(std::cin, ticketType);
+    std::cout << "Enter entry time: ";
+    std::getline(std::cin, entryTime);
 
-    visitors.push_back(Visitor(name, age, ticketType, entryTime));
-}
+    // Prompt for type of visitor
+    int visitorType;
+    std::cout << "Enter visitor type (1-Child, 2-Adult): ";
+    std::cin >> visitorType;
 
-void removeVisitor(vector<Visitor> &visitors)
-{
-    string name;
-    cout << "Enter the name of the visitor to remove: ";
-    cin >> ws;
-    getline(cin, name);
-
-    auto it = remove_if(visitors.begin(), visitors.end(), [&](const Visitor &visitor)
-                        { return visitor.getName() == name; });
-
-    if (it != visitors.end())
+    Visitor *visitor;
+    if (visitorType == 1)
     {
-        visitors.erase(it, visitors.end());
-        cout << "Visitor removed." << endl;
+        visitor = new ChildVisitor(name, age, ticketType, entryTime);
+    }
+    else if (visitorType == 2)
+    {
+        visitor = new AdultVisitor(name, age, ticketType, entryTime);
     }
     else
     {
-        cout << "Visitor not found." << endl;
+        std::cout << "Invalid visitor type!" << std::endl;
+        return;
     }
+
+    visitors.push_back(visitor);
+    std::cout << "Visitor added." << std::endl;
 }
 
-void searchVisitor(const vector<Visitor> &visitors)
+// Function to remove a visitor by name
+void removeVisitor(std::vector<Visitor *> &visitors)
 {
-    string name;
-    cout << "Enter the name of the visitor to search: ";
-    cin >> ws;
-    getline(cin, name);
+    std::string name;
+    std::cout << "Enter the name of the visitor to remove: ";
+    std::cin >> std::ws;
+    std::getline(std::cin, name);
 
-    auto it = find_if(visitors.begin(), visitors.end(), [&](const Visitor &visitor)
-                      { return visitor.getName() == name; });
+    auto it = std::remove_if(visitors.begin(), visitors.end(), [&](Visitor *visitor)
+                             { return visitor->getName() == name; });
 
     if (it != visitors.end())
     {
-        cout << "Visitor found: " << "Name: " << it->getName() << "\nAge: " << it->getAge() << "\nTicket Type: " << it->getTicketType() << "\nEntry Time: " << it->getEntryTime() << endl;
+        delete *it;
+        visitors.erase(it);
+        std::cout << "Visitor removed." << std::endl;
     }
     else
     {
-        cout << "Visitor not found." << endl;
+        std::cout << "Visitor not found." << std::endl;
     }
 }
+
+// Function to search for a visitor by name
+void searchVisitor(std::vector<Visitor *> &visitors)
+{
+    std::string name;
+    std::cout << "Enter the name of the visitor to search: ";
+    std::cin >> std::ws;
+    std::getline(std::cin, name);
+
+    bool found = false;
+    for (Visitor *visitor : visitors)
+    {
+        if (visitor->getName() == name)
+        {
+            std::cout << "Visitor found:" << std::endl;
+            std::cout << "Name: " << visitor->getName() << "\nAge: " << visitor->getAge()
+                      << "\nTicket Type: " << visitor->getTicketType() << "\nEntry Time: " << visitor->getEntryTime() << std::endl;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        std::cout << "Visitor not found." << std::endl;
+    }
+}
+
+
 
 int main()
 {
     vector<Animal *> animals;
     vector<Cage *> cages;
-    vector<employee *> employees;
-    vector<Visitor> visitors;
+    vector<unique_ptr<employee>> employees;
+    vector<Visitor *> visitors;
 
     initializeAnimals(animals);
     initializeCages(cages);
+    initializeEmployees(employees);
+    initializeVisitors(visitors);
 
     while (true)
     {
@@ -513,15 +626,18 @@ int main()
             searchEmployee(employees);
             break;
         case 14:
-            addVisitor(visitors);
+            chooseEmployeesForBreak(employees);
             break;
         case 15:
-            removeVisitor(visitors);
+            addVisitor(visitors);
             break;
         case 16:
-            searchVisitor(visitors);
+            removeVisitor(visitors);
             break;
         case 17:
+            searchVisitor(visitors);
+            break;
+        case 18:
             sort(animals.begin(), animals.end(), compareByAge);
             sortAnimal(animals);
             break;
@@ -529,10 +645,6 @@ int main()
             for (Animal *animal : animals)
             {
                 delete animal;
-            }
-            for (employee *emp : employees)
-            {
-                delete emp;
             }
             for (Cage *cage : cages)
             {
