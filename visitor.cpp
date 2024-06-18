@@ -1,48 +1,59 @@
-#include "Visitor.h"
+#include "visitor.h"
 
 Visitor::Visitor(string name, int age, string ticketType, string entryTime)
     : name(name), age(age), ticketType(ticketType), entryTime(entryTime) {}
 
-void Visitor::setName(string name) {
+void Visitor::setName(string name)
+{
     this->name = name;
 }
 
-void Visitor::setAge(int age) {
+void Visitor::setAge(int age)
+{
     this->age = age;
 }
 
-void Visitor::setTicketType(string ticketType) {
+void Visitor::setTicketType(string ticketType)
+{
     this->ticketType = ticketType;
 }
 
-void Visitor::setEntryTime(string entryTime) {
+void Visitor::setEntryTime(string entryTime)
+{
     this->entryTime = entryTime;
 }
 
-string Visitor::getName() const {
+string Visitor::getName() const
+{
     return name;
 }
 
-int Visitor::getAge() const {
+int Visitor::getAge() const
+{
     return age;
 }
 
-string Visitor::getTicketType() const {
+string Visitor::getTicketType() const
+{
     return ticketType;
 }
 
-string Visitor::getEntryTime() const {
+string Visitor::getEntryTime() const
+{
     return entryTime;
 }
 
-void Visitor::enterZoo() {
+void Visitor::enterZoo()
+{
     cout << name << " has entered the zoo." << endl;
 }
 
-void Visitor::observeAnimals() {
+void Visitor::observeAnimals()
+{
     cout << name << " is observing the animals." << endl;
 }
 
-void Visitor::buySouvenirs() {
+void Visitor::buySouvenirs()
+{
     cout << name << " is buying souvenirs." << endl;
 }

@@ -6,7 +6,8 @@
 
 using namespace std;
 
-class Visitor {
+class Visitor
+{
 private:
     string name;
     int age;

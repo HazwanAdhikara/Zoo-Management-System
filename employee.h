@@ -6,7 +6,8 @@
 
 using namespace std;
 
-class employee {
+class employee
+{
 protected:
     string name;
     int employeeID;
