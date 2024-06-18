@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <cstdlib>
 #include "animal.h"
 #include "cage.h"
 #include "employee.h"
@@ -12,27 +13,29 @@ using namespace std;
 
 void menu()
 {
-    cout << "\n";
-    cout << "> Here are the things that you could do < \n";
-    cout << "Option 1 : Show all Animals \n";
-    cout << "Option 2 : Show all Cage \n";
-    cout << "Option 3 : Show all Employee \n";
-    cout << "Option 4 : Show all Visitor \n";
-    cout << "Option 5 : Add Animal \n";
-    cout << "Option 6 : Remove Animal \n";
-    cout << "Option 7 : Search Animal \n";
-    cout << "Option 8 : Add Cage \n";
-    cout << "Option 9 : Remove Cage \n";
-    cout << "Option 10 : Search Cage \n";
-    cout << "Option 11 : Add Employee \n";
-    cout << "Option 12 : Remove Employee \n";
-    cout << "Option 13 : Search Employee \n";
-    cout << "Option 14 : Break for Employee \n";
-    cout << "Option 15 : Add Visitor \n";
-    cout << "Option 16 : Remove Visitor \n";
-    cout << "Option 17 : Search Visitor \n";
-    cout << "Option 18 : Sorting \n";
-    cout << "Option 0 : Exit \n";
+    cout << "**********************************************\n";
+    cout << "*          ZOO MANAGEMENT SYSTEM             *\n";
+    cout << "**********************************************\n";
+    cout << "* Option 1  : Show all Animals               *\n";
+    cout << "* Option 2  : Show all Cage                  *\n";
+    cout << "* Option 3  : Show all Employees             *\n";
+    cout << "* Option 4  : Show all Visitors              *\n";
+    cout << "* Option 5  : Add Animal                     *\n";
+    cout << "* Option 6  : Remove Animal                  *\n";
+    cout << "* Option 7  : Search Animal                  *\n";
+    cout << "* Option 8  : Add Cage                       *\n";
+    cout << "* Option 9  : Remove Cage                    *\n";
+    cout << "* Option 10 : Search Cage                    *\n";
+    cout << "* Option 11 : Add Employee                   *\n";
+    cout << "* Option 12 : Remove Employee                *\n";
+    cout << "* Option 13 : Search Employee                *\n";
+    cout << "* Option 14 : Break for Employee             *\n";
+    cout << "* Option 15 : Add Visitor                    *\n";
+    cout << "* Option 16 : Remove Visitor                 *\n";
+    cout << "* Option 17 : Search Visitor                 *\n";
+    cout << "* Option 18 : Sorting                        *\n";
+    cout << "* Option 0  : Exit                           *\n";
+    cout << "**********************************************\n";
 }
 
 void menuSort()
@@ -44,6 +47,24 @@ void menuSort()
     cout << "Option 3 : Sort Employee ID \n";
     cout << "Option 4 : Sort Visitor Age \n";
     cout << "Option 0 : Exit \n";
+}
+
+void waitForEnter()
+{
+    cout << "Press Enter to continue..." << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
+}
+
+void clearTerminal()
+{
+// Windows
+#ifdef _WIN32
+    std::system("cls");
+// For Unix-based systems (Linux, macOS, etc.)
+#else
+    std::system("clear");
+#endif
 }
 
 bool compareByAge(Animal *a, Animal *b)
@@ -657,54 +678,88 @@ int main()
         {
         case 1:
             showAllAnimals(animals);
+            waitForEnter();
+            clearTerminal();
             break;
         case 2:
             showAllCages(cages);
+            waitForEnter();
+            clearTerminal();
             break;
         case 3:
             showAllEmployees(employees);
+            waitForEnter();
+            clearTerminal();
             break;
         case 4:
             showAllVisitors(visitors);
+            waitForEnter();
+            clearTerminal();
             break;
         case 5:
             addAnimal(animals);
+            waitForEnter();
+            clearTerminal();
             break;
         case 6:
             removeAnimal(animals);
+            waitForEnter();
+            clearTerminal();
             break;
         case 7:
             searchAnimal(animals);
+            waitForEnter();
+            clearTerminal();
             break;
         case 8:
             addCage(cages);
+            waitForEnter();
+            clearTerminal();
             break;
         case 9:
             removeCage(cages);
+            waitForEnter();
+            clearTerminal();
             break;
         case 10:
             searchCage(cages);
+            waitForEnter();
+            clearTerminal();
             break;
         case 11:
             addEmployee(employees);
+            waitForEnter();
+            clearTerminal();
             break;
         case 12:
             removeEmployee(employees);
+            waitForEnter();
+            clearTerminal();
             break;
         case 13:
             searchEmployee(employees);
+            waitForEnter();
+            clearTerminal();
             break;
         case 14:
             chooseEmployeesForBreak(employees);
+            waitForEnter();
+            clearTerminal();
             break;
         case 15:
             addVisitor(visitors);
+            waitForEnter();
+            clearTerminal();
             break;
         case 16:
             removeVisitor(visitors);
+            waitForEnter();
+            clearTerminal();
             break;
         case 17:
             searchVisitor(visitors);
+            waitForEnter();
+            clearTerminal();
             break;
         case 18:
             while (true)
@@ -721,18 +776,26 @@ int main()
                 case 1:
                     sort(animals.begin(), animals.end(), compareByAge);
                     sortAnimal(animals);
+                    waitForEnter();
+                    clearTerminal();
                     continue;
                 case 2:
                     sort(cages.begin(), cages.end(), compareByCapacity);
                     sortCages(cages);
+                    waitForEnter();
+                    clearTerminal();
                     continue;
                 case 3:
                     sort(employees.begin(), employees.end(), compareByID);
                     sortID(employees);
+                    waitForEnter();
+                    clearTerminal();
                     continue;
                 case 4:
                     sort(visitors.begin(), visitors.end(), compareByAge1);
                     sortVisitor(visitors);
+                    waitForEnter();
+                    clearTerminal();
                     continue;
                 case 0:
                     cout << "Returning to main menu. \n"
