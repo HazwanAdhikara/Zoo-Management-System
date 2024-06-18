@@ -213,6 +213,31 @@ void sortAnimal(const vector<Animal *> &animals)
 }
 
 // Cages
+void initializeCages(vector<Cage *> &cages)
+{
+    cout << "\n"
+         << endl;
+    cages.push_back(new MammalCage(1, 10));
+    cages.push_back(new MammalCage(2, 20));
+    cages.push_back(new MammalCage(3, 30));
+
+    cages.push_back(new BirdCage(4, 25));
+    cages.push_back(new BirdCage(5, 35));
+    cages.push_back(new BirdCage(6, 45));
+
+    cages.push_back(new ReptileCage(7, 4));
+    cages.push_back(new ReptileCage(8, 8));
+    cages.push_back(new ReptileCage(9, 12));
+
+    cages.push_back(new FishCage(10, 80));
+    cages.push_back(new FishCage(11, 100));
+    cages.push_back(new FishCage(12, 120));
+
+    cages.push_back(new BugCage(13, 55));
+    cages.push_back(new BugCage(14, 70));
+    cages.push_back(new BugCage(15, 150));
+}
+
 void showAllCages(const vector<Cage *> &cages)
 {
     if (cages.empty())
@@ -437,6 +462,7 @@ int main()
     vector<Visitor> visitors;
 
     initializeAnimals(animals);
+    initializeCages(cages);
 
     while (true)
     {
