@@ -9,9 +9,9 @@ protected:
     std::string name;
     int employeeID;
     std::string position;
-    std::string salary;  // Changed to string
+    std::string salary;
     std::string shift;
-    bool onBreak;  // New member variable to track break status
+    bool onBreak;
 
 public:
     employee(const std::string &name, int employeeID, const std::string &position, const std::string &salary, const std::string &shift);
@@ -37,10 +37,8 @@ public:
     virtual void work() const;
     virtual std::string getDetails() const;
 
-    // Method to take a break
     void takeBreak();
 
-    // Method to check if the employee is on break
     bool isOnBreak() const;
 };
 

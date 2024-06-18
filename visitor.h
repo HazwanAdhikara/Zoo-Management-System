@@ -5,7 +5,8 @@
 #include <string>
 
 // Base Visitor class
-class Visitor {
+class Visitor
+{
 protected:
     std::string name;
     int age;
@@ -30,8 +31,9 @@ public:
     virtual void buySouvenirs() const;
 };
 
-// Child Visitor class
-class ChildVisitor : public Visitor {
+// (Inheritance) Child Visitor class
+class ChildVisitor : public Visitor
+{
 public:
     ChildVisitor(std::string name, int age, std::string ticketType, std::string entryTime);
 
@@ -40,8 +42,9 @@ public:
     void buySouvenirs() const override;
 };
 
-// Adult Visitor class
-class AdultVisitor : public Visitor {
+// (Inheritance) Adult Visitor class
+class AdultVisitor : public Visitor
+{
 public:
     AdultVisitor(std::string name, int age, std::string ticketType, std::string entryTime);
 

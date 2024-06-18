@@ -190,7 +190,6 @@ void searchAnimal(const vector<Animal *> &animals)
 
     vector<Animal *> matches;
 
-    // Find all animals that match the search criteria
     for (Animal *animal : animals)
     {
         string animalName = animal->getName();
@@ -494,7 +493,6 @@ void searchEmployee(const vector<unique_ptr<employee>> &employees)
     }
 }
 
-
 void sortID(const vector<unique_ptr<employee>> &employees)
 {
     if (employees.empty())
@@ -507,7 +505,6 @@ void sortID(const vector<unique_ptr<employee>> &employees)
         cout << "> " << emp->getName() << ", Employee ID: " << emp->getEmployeeID() << endl;
     }
 }
-
 
 // Visitors
 void initializeVisitors(std::vector<Visitor *> &visitors)
@@ -537,7 +534,6 @@ void showAllVisitors(const std::vector<Visitor *> &visitors)
     }
 }
 
-// Function to add a new visitor
 void addVisitor(std::vector<Visitor *> &visitors)
 {
     std::string name, ticketType, entryTime;
@@ -554,7 +550,6 @@ void addVisitor(std::vector<Visitor *> &visitors)
     std::cout << "Enter entry time: ";
     std::getline(std::cin, entryTime);
 
-    // Prompt for type of visitor
     int visitorType;
     std::cout << "Enter visitor type (1-Child, 2-Adult): ";
     std::cin >> visitorType;
@@ -636,7 +631,6 @@ void sortVisitor(std::vector<Visitor *> &visitors)
     for (Visitor *visitor : visitors)
     {
         cout << "> " << visitor->getName() << ", Age: " << visitor->getAge() << endl;
-        
     }
 }
 
