@@ -46,7 +46,7 @@ void menuSort()
     cout << "Option 2 : Sort Cage Capacity \n";
     cout << "Option 3 : Sort Employee ID \n";
     cout << "Option 4 : Sort Visitor Age \n";
-    cout << "Option 0 : Exit \n";
+    cout << "Option 0 : Return to Main Menu \n";
 }
 
 void waitForEnter()
