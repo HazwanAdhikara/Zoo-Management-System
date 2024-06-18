@@ -1,8 +1,9 @@
 #include "cage.h"
+#include "animal.h"
 #include <iostream>
 
-Cage::Cage(int cageNumber, int capacity, const string &animalType)
-    : cageNumber(cageNumber), capacity(capacity), animalType(animalType) {}
+Cage::Cage(int cageNumber, int capacity, const string &animalType, int animalCount)
+    : cageNumber(cageNumber), capacity(capacity), animalType(animalType), animalCount(animalCount) {}
 
 Cage::~Cage()
 {
@@ -20,6 +21,7 @@ bool Cage::addAnimal(Animal *animal)
         return false;
     }
     animals.push_back(animal);
+    animalCount++;
     return true;
 }
 
@@ -31,6 +33,7 @@ bool Cage::removeAnimal(const string &name)
         {
             delete *it;
             animals.erase(it);
+            animalCount--;
             return true;
         }
     }
@@ -46,7 +49,7 @@ void Cage::cleanCage() const
 int Cage::getCageNumber() const { return cageNumber; }
 int Cage::getCapacity() const { return capacity; }
 string Cage::getAnimalType() const { return animalType; }
-int Cage::getAnimalCount() const { return animals.size(); }
+int Cage::getAnimalCount() const { return animalCount; }
 
 void Cage::listAnimals() const
 {
@@ -62,8 +65,8 @@ void Cage::listAnimals() const
 }
 
 // MammalCage class implementation
-MammalCage::MammalCage(int cageNumber, int capacity)
-    : Cage(cageNumber, capacity, "Mammal") {}
+MammalCage::MammalCage(int cageNumber, int capacity, int animalCount)
+    : Cage(cageNumber, capacity, "Mammal", animalCount) {}
 
 bool MammalCage::addAnimal(Animal *animal)
 {
@@ -84,8 +87,8 @@ void MammalCage::cleanCage() const
 }
 
 // BirdCage class implementation
-BirdCage::BirdCage(int cageNumber, int capacity)
-    : Cage(cageNumber, capacity, "Bird") {}
+BirdCage::BirdCage(int cageNumber, int capacity, int animalCount)
+    : Cage(cageNumber, capacity, "Bird", animalCount) {}
 
 bool BirdCage::addAnimal(Animal *animal)
 {
@@ -106,8 +109,8 @@ void BirdCage::cleanCage() const
 }
 
 // ReptileCage class implementation
-ReptileCage::ReptileCage(int cageNumber, int capacity)
-    : Cage(cageNumber, capacity, "Reptile") {}
+ReptileCage::ReptileCage(int cageNumber, int capacity, int animalCount)
+    : Cage(cageNumber, capacity, "Reptile", animalCount) {}
 
 bool ReptileCage::addAnimal(Animal *animal)
 {
@@ -128,8 +131,8 @@ void ReptileCage::cleanCage() const
 }
 
 // FishCage class implementation
-FishCage::FishCage(int cageNumber, int capacity)
-    : Cage(cageNumber, capacity, "Fish") {}
+FishCage::FishCage(int cageNumber, int capacity, int animalCount)
+    : Cage(cageNumber, capacity, "Fish", animalCount) {}
 
 bool FishCage::addAnimal(Animal *animal)
 {
@@ -150,8 +153,8 @@ void FishCage::cleanCage() const
 }
 
 // BugCage class implementation
-BugCage::BugCage(int cageNumber, int capacity)
-    : Cage(cageNumber, capacity, "Bug") {}
+BugCage::BugCage(int cageNumber, int capacity, int animalCount)
+    : Cage(cageNumber, capacity, "Bug", animalCount) {}
 
 bool BugCage::addAnimal(Animal *animal)
 {

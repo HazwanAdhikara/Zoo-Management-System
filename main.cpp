@@ -14,30 +14,46 @@ void menu()
 {
     cout << "\n";
     cout << "> Here are the things that you could do < \n";
-    cout << "option 1 : Show all Animals \n";
-    cout << "option 2 : Show all Cage \n";
-    cout << "option 3 : Show all Employee \n";
-    cout << "option 4 : Show all Visitor \n";
-    cout << "option 5 : Add Animal \n";
-    cout << "option 6 : Remove Animal \n";
-    cout << "option 7 : Search Animal \n";
-    cout << "option 8 : Add Cage \n";
-    cout << "option 9 : Remove Cage \n";
-    cout << "option 10 : Search Cage \n";
-    cout << "option 11 : Add Employee \n";
-    cout << "option 12 : Remove Employee \n";
-    cout << "option 13 : Search Employee \n";
-    cout << "option 14 : Break for Employee \n";
-    cout << "option 15 : Add Visitor \n";
-    cout << "option 16 : Remove Visitor \n";
-    cout << "option 17 : Search Visitor \n";
-    cout << "option 18 : Sorting \n";
-    cout << "option 0 : Exit \n";
+    cout << "Option 1 : Show all Animals \n";
+    cout << "Option 2 : Show all Cage \n";
+    cout << "Option 3 : Show all Employee \n";
+    cout << "Option 4 : Show all Visitor \n";
+    cout << "Option 5 : Add Animal \n";
+    cout << "Option 6 : Remove Animal \n";
+    cout << "Option 7 : Search Animal \n";
+    cout << "Option 8 : Add Cage \n";
+    cout << "Option 9 : Remove Cage \n";
+    cout << "Option 10 : Search Cage \n";
+    cout << "Option 11 : Add Employee \n";
+    cout << "Option 12 : Remove Employee \n";
+    cout << "Option 13 : Search Employee \n";
+    cout << "Option 14 : Break for Employee \n";
+    cout << "Option 15 : Add Visitor \n";
+    cout << "Option 16 : Remove Visitor \n";
+    cout << "Option 17 : Search Visitor \n";
+    cout << "Option 18 : Sorting \n";
+    cout << "Option 0 : Exit \n";
+}
+
+void menuSort()
+{
+    cout << "\n";
+    cout << "> Which one do you want to sort? < \n";
+    cout << "Option 1 : Sort Animals Age \n";
+    cout << "Option 2 : Sort Cage Capacity \n";
+    cout << "Option 3 : Sort Employee Salary \n";
+    cout << "Option 4 : Sort Visitor Age \n";
+    cout << "Option 0 : Exit \n";
 }
 
 bool compareByAge(Animal *a, Animal *b)
 {
     return a->getAge() < b->getAge();
+}
+
+bool compareByCapacity(Cage *a, Cage *b)
+{
+    return a->getCapacity() < b->getCapacity();
 }
 
 // Animals
@@ -200,7 +216,7 @@ void sortAnimal(const vector<Animal *> &animals)
     }
     for (Animal *animal : animals)
     {
-        cout << animal->getName() << " (" << animal->getAge() << " years old)" << endl;
+        cout << "- " << animal->getName() << " (" << animal->getAge() << " years old)" << endl;
         animal->eat();
         cout << "\n"
              << endl;
@@ -219,25 +235,25 @@ void initializeCages(vector<Cage *> &cages)
 {
     cout << "\n"
          << endl;
-    cages.push_back(new MammalCage(1, 10));
-    cages.push_back(new MammalCage(2, 20));
-    cages.push_back(new MammalCage(3, 30));
+    cages.push_back(new MammalCage(1, 10, 3));
+    cages.push_back(new MammalCage(2, 20, 17));
+    cages.push_back(new MammalCage(3, 30, 10));
 
-    cages.push_back(new BirdCage(4, 25));
-    cages.push_back(new BirdCage(5, 35));
-    cages.push_back(new BirdCage(6, 45));
+    cages.push_back(new BirdCage(4, 25, 9));
+    cages.push_back(new BirdCage(5, 35, 20));
+    cages.push_back(new BirdCage(6, 45, 15));
 
-    cages.push_back(new ReptileCage(7, 4));
-    cages.push_back(new ReptileCage(8, 8));
-    cages.push_back(new ReptileCage(9, 12));
+    cages.push_back(new ReptileCage(7, 4, 3));
+    cages.push_back(new ReptileCage(8, 8, 7));
+    cages.push_back(new ReptileCage(9, 12, 8));
 
-    cages.push_back(new FishCage(10, 80));
-    cages.push_back(new FishCage(11, 100));
-    cages.push_back(new FishCage(12, 120));
+    cages.push_back(new FishCage(10, 80, 70));
+    cages.push_back(new FishCage(11, 100, 86));
+    cages.push_back(new FishCage(12, 120, 116));
 
-    cages.push_back(new BugCage(13, 55));
-    cages.push_back(new BugCage(14, 70));
-    cages.push_back(new BugCage(15, 150));
+    cages.push_back(new BugCage(13, 55, 48));
+    cages.push_back(new BugCage(14, 70, 68));
+    cages.push_back(new BugCage(15, 150, 135));
 }
 
 void showAllCages(const vector<Cage *> &cages)
@@ -249,14 +265,13 @@ void showAllCages(const vector<Cage *> &cages)
     }
     for (const auto &cage : cages)
     {
-        cout << "Cage Number: " << cage->getCageNumber() << ", Type: " << cage->getAnimalType() << ", Capacity: " << cage->getCapacity() << ", Animals Count: " << cage->getAnimalCount() << endl;
-        cage->listAnimals();
+        cout << "Cage Number: " << cage->getCageNumber() << ", Cage Type: " << cage->getAnimalType() << ", Capacity: " << cage->getCapacity() << ", Animals Count: " << cage->getAnimalCount() << endl;
     }
 }
 
 void addCage(vector<Cage *> &cages)
 {
-    int cageNumber, capacity;
+    int cageNumber, capacity, animalCount;
     string animalType;
 
     cout << "Enter cage number: ";
@@ -266,8 +281,10 @@ void addCage(vector<Cage *> &cages)
     getline(cin, animalType);
     cout << "Enter capacity: ";
     cin >> capacity;
+    cout << "How many animal do you want to add in the cage? : ";
+    cin >> animalCount;
 
-    cages.push_back(new Cage(cageNumber, capacity, animalType));
+    cages.push_back(new Cage(cageNumber, capacity, animalType, animalCount));
 }
 
 void removeCage(vector<Cage *> &cages)
@@ -307,11 +324,24 @@ void searchCage(const vector<Cage *> &cages)
     if (it != cages.end())
     {
         cout << "Cage found: " << "Cage Number: " << (*it)->getCageNumber() << ", Type: " << (*it)->getAnimalType() << ", Capacity: " << (*it)->getCapacity() << ", Animals Count: " << (*it)->getAnimalCount() << endl;
-        (*it)->listAnimals();
     }
     else
     {
         cout << "Cage not found." << endl;
+    }
+}
+
+void sortCages(const vector<Cage *> &cages)
+{
+    if (cages.empty())
+    {
+        cout << "No cages in the zoo." << endl;
+        return;
+    }
+    for (Cage *cage : cages)
+    {
+        cout << "> " << "Cage Number: " << cage->getCageNumber() << ", Capacity: " << cage->getCapacity() << endl;
+        cout << "\n";
     }
 }
 
@@ -325,41 +355,51 @@ void initializeEmployees(vector<unique_ptr<employee>> &employees)
     employees.push_back(unique_ptr<employee>(new Manager("Charlie", 3, "Manager", "70000", "Day")));
 }
 
-void showAllEmployees(const vector<unique_ptr<employee>>& employees) {
-    if (employees.empty()) {
+void showAllEmployees(const vector<unique_ptr<employee>> &employees)
+{
+    if (employees.empty())
+    {
         cout << "No employees in the zoo." << endl;
         return;
     }
 
-    for (const auto& emp : employees) {
+    for (const auto &emp : employees)
+    {
         cout << "> " << emp->getName() << " (" << emp->getPosition() << ")" << endl;
         emp->work();
-        if (emp->isOnBreak()) {
+        if (emp->isOnBreak())
+        {
             cout << " -> is taking a break" << endl;
         }
         cout << endl;
     }
 }
 
-void chooseEmployeesForBreak(vector<unique_ptr<employee>>& employees) {
+void chooseEmployeesForBreak(vector<unique_ptr<employee>> &employees)
+{
     int count;
     cout << "Enter the number of employees to take a break: ";
     cin >> count;
 
-    if (count <= 0 || count > employees.size()) {
+    if (count <= 0 || count > employees.size())
+    {
         cout << "Invalid number of employees." << endl;
         return;
     }
 
     cout << "Select " << count << " employees for a break:" << endl;
-    for (size_t i = 0; i < count; ++i) {
+    for (size_t i = 0; i < count; ++i)
+    {
         int index;
         cout << i + 1 << ". Enter the index of employee: ";
         cin >> index;
 
-        if (index >= 1 && index <= employees.size()) {
+        if (index >= 1 && index <= employees.size())
+        {
             employees[index - 1]->takeBreak();
-        } else {
+        }
+        else
+        {
             cout << "Invalid index." << endl;
             --i;
         }
@@ -513,7 +553,6 @@ void addVisitor(std::vector<Visitor *> &visitors)
     std::cout << "Visitor added." << std::endl;
 }
 
-// Function to remove a visitor by name
 void removeVisitor(std::vector<Visitor *> &visitors)
 {
     std::string name;
@@ -536,7 +575,6 @@ void removeVisitor(std::vector<Visitor *> &visitors)
     }
 }
 
-// Function to search for a visitor by name
 void searchVisitor(std::vector<Visitor *> &visitors)
 {
     std::string name;
@@ -562,8 +600,6 @@ void searchVisitor(std::vector<Visitor *> &visitors)
         std::cout << "Visitor not found." << std::endl;
     }
 }
-
-
 
 int main()
 {
@@ -638,23 +674,58 @@ int main()
             searchVisitor(visitors);
             break;
         case 18:
-            sort(animals.begin(), animals.end(), compareByAge);
-            sortAnimal(animals);
-            break;
-        case 0:
-            for (Animal *animal : animals)
+            while (true)
             {
-                delete animal;
+                int mainMenu;
+                menuSort();
+                int sortOption;
+                cout << "Enter your option: ";
+                cin >> sortOption;
+                cout << "\n";
+
+                switch (sortOption)
+                {
+                case 1:
+                    sort(animals.begin(), animals.end(), compareByAge);
+                    sortAnimal(animals);
+                    continue;
+                case 2:
+                    sort(cages.begin(), cages.end(), compareByCapacity);
+                    sortCages(cages);
+                    continue;
+                case 3:
+                    // code for option 3
+                    continue;
+                case 4:
+                    // code for option 4
+                    continue;
+                case 0:
+                    cout << "Returning to main menu. \n"
+                         << endl;
+                    break;
+                default:
+                    cout << "Please input the available options! \n"
+                         << endl;
+                    continue;
+                }
+                break;
+            case 0:
+                cout << "See You Later! \n";
+
+                for (Animal *animal : animals)
+                {
+                    delete animal;
+                }
+                for (Cage *cage : cages)
+                {
+                    delete cage;
+                }
+                return 0;
+            default:
+                cout << "Invalid option! \n"
+                     << endl;
             }
-            for (Cage *cage : cages)
-            {
-                delete cage;
-            }
-            return 0;
-        default:
-            cout << "Invalid option!" << endl;
         }
     }
-
     return 0;
 }

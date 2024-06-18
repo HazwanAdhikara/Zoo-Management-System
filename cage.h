@@ -13,10 +13,11 @@ protected:
     int cageNumber;
     int capacity;
     string animalType;
+    int animalCount;
     vector<Animal *> animals;
 
 public:
-    Cage(int cageNumber, int capacity, const string &animalType);
+    Cage(int cageNumber, int capacity, const string &animalType, int animalCount);
     virtual ~Cage();
 
     virtual bool addAnimal(Animal *animal);
@@ -34,7 +35,7 @@ public:
 class MammalCage : public Cage
 {
 public:
-    MammalCage(int cageNumber, int capacity);
+    MammalCage(int cageNumber, int capacity, int animalCount);
     bool addAnimal(Animal *animal) override;
     void cleanCage() const override;
 };
@@ -42,7 +43,7 @@ public:
 class BirdCage : public Cage
 {
 public:
-    BirdCage(int cageNumber, int capacity);
+    BirdCage(int cageNumber, int capacity, int animalCount);
     bool addAnimal(Animal *animal) override;
     void cleanCage() const override;
 };
@@ -50,7 +51,7 @@ public:
 class ReptileCage : public Cage
 {
 public:
-    ReptileCage(int cageNumber, int capacity);
+    ReptileCage(int cageNumber, int capacity, int animalCount);
     bool addAnimal(Animal *animal) override;
     void cleanCage() const override;
 };
@@ -58,7 +59,7 @@ public:
 class FishCage : public Cage
 {
 public:
-    FishCage(int cageNumber, int capacity);
+    FishCage(int cageNumber, int capacity, int animalCount);
     bool addAnimal(Animal *animal) override;
     void cleanCage() const override;
 };
@@ -66,7 +67,7 @@ public:
 class BugCage : public Cage
 {
 public:
-    BugCage(int cageNumber, int capacity);
+    BugCage(int cageNumber, int capacity, int animalCount);
     bool addAnimal(Animal *animal) override;
     void cleanCage() const override;
 };
