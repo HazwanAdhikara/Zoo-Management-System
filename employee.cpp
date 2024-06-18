@@ -49,7 +49,6 @@ void employee::setShift(const string &shift) {
 }
 
 void employee::work() const {
-    // Default implementation (can be overridden)
     cout << name << " is working as " << position << "." << endl;
 }
 

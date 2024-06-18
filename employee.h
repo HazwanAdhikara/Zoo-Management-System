@@ -16,7 +16,6 @@ protected:
 
 public:
     employee(const string &name, int employeeID, const string &position, double salary, const string &shift);
-
     virtual ~employee();
 
     string getName() const;
@@ -40,4 +39,4 @@ public:
     virtual void takeBreak() const;
 };
 
-#endif // EMPLOYEE_H
+#endif

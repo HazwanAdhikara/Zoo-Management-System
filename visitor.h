@@ -6,8 +6,7 @@
 
 using namespace std;
 
-class Visitor
-{
+class Visitor {
 private:
     string name;
     int age;
@@ -15,22 +14,18 @@ private:
     string entryTime;
 
 public:
-    // Constructor
     Visitor(string name, int age, string ticketType, string entryTime);
 
-    // Setter methods
     void setName(string name);
     void setAge(int age);
     void setTicketType(string ticketType);
     void setEntryTime(string entryTime);
 
-    // Getter methods
-    string getName();
-    int getAge();
-    string getTicketType();
-    string getEntryTime();
+    string getName() const;
+    int getAge() const;
+    string getTicketType() const;
+    string getEntryTime() const;
 
-    // Other methods
     void enterZoo();
     void observeAnimals();
     void buySouvenirs();

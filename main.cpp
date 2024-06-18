@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <vector>
 #include <algorithm>
 #include "animal.h"
@@ -9,62 +9,7 @@
 
 using namespace std;
 
-vector<Animal *> animals;
-vector<Cage *> cages;
-
-void showAllCages()
-{
-    if (cages.empty())
-    {
-        cout << "No cages available." << endl;
-        return;
-    }
-    for (const auto &cage : cages)
-    {
-        cout << "Cage Number: " << cage->getCageNumber() << ", Type: " << cage->getAnimalType() << ", Capacity: " << cage->getCapacity() << ", Animals Count: " << cage->getAnimalCount() << endl;
-        cage->listAnimals();
-    }
-}
-
-void addCage(Cage *cage)
-{
-    cages.push_back(cage);
-}
-
-void removeCage(int cageNumber)
-{
-    auto it = remove_if(cages.begin(), cages.end(), [cageNumber](Cage *cage)
-                        {
-        if (cage->getCageNumber() == cageNumber) {
-            delete cage;
-            return true;
-        }
-        return false; });
-    if (it != cages.end())
-    {
-        cages.erase(it, cages.end());
-        cout << "Cage " << cageNumber << " removed." << endl;
-    }
-    else
-    {
-        cout << "Cage " << cageNumber << " not found." << endl;
-    }
-}
-
-Cage *searchCage(int cageNumber)
-{
-    for (auto &cage : cages)
-    {
-        if (cage->getCageNumber() == cageNumber)
-        {
-            return cage;
-        }
-    }
-    cout << "Cage " << cageNumber << " not found." << endl;
-    return nullptr;
-}
-void menu()
-{
+void menu() {
     cout << "\n";
     cout << "> Here are the things that you could do < \n";
     cout << "option 1 : Show all Animals \n";
@@ -87,62 +32,379 @@ void menu()
     cout << "option 0 : Exit \n";
 }
 
-bool compareByAge(Animal *a, Animal *b)
-{
+bool compareByAge(Animal *a, Animal *b) {
     return a->getAge() < b->getAge();
 }
 
-int main()
-{
+void showAllAnimals(const vector<Animal *> &animals) {
+    for (Animal *animal : animals) {
+        cout << animal->getName() << " (" << animal->getAge() << " years old)" << endl;
+        animal->eat();
+        cout << "\n";
+        animal->sleep();
+        cout << "\n";
+        animal->makeSound();
+        cout << "\n";
+    }
+}
 
-    // Create Mammal objects
+void addAnimal(vector<Animal *> &animals) {
+    string name, species, gender;
+    int age, type;
+
+    cout << "Enter animal type (1-Mammal, 2-Bird, 3-Reptile, 4-Fish, 5-Bug): ";
+    cin >> type;
+    cout << "Enter name: ";
+    cin >> ws; // clear whitespace
+    getline(cin, name);
+    cout << "Enter species: ";
+    getline(cin, species);
+    cout << "Enter age: ";
+    cin >> age;
+    cout << "Enter gender: ";
+    cin >> ws;
+    getline(cin, gender);
+
+    switch (type) {
+    case 1:
+        animals.push_back(new Mammal(name, species, age, gender));
+        break;
+    case 2:
+        animals.push_back(new Bird(name, species, age, gender));
+        break;
+    case 3:
+        animals.push_back(new Reptile(name, species, age, gender));
+        break;
+    case 4:
+        animals.push_back(new Fish(name, species, age, gender));
+        break;
+    case 5:
+        animals.push_back(new Bug(name, species, age, gender));
+        break;
+    default:
+        cout << "Invalid type!" << endl;
+    }
+}
+
+void removeAnimal(vector<Animal *> &animals) {
+    string name;
+    cout << "Enter the name of the animal to remove: ";
+    cin >> ws;
+    getline(cin, name);
+
+    auto it = remove_if(animals.begin(), animals.end(), [&](Animal *animal) {
+        return animal->getName() == name;
+    });
+
+    if (it != animals.end()) {
+        delete *it;
+        animals.erase(it, animals.end());
+        cout << "Animal removed." << endl;
+    } else {
+        cout << "Animal not found." << endl;
+    }
+}
+
+void searchAnimal(const vector<Animal *> &animals) {
+    string name;
+    cout << "Enter the name of the animal to search: ";
+    cin >> ws;
+    getline(cin, name);
+
+    auto it = find_if(animals.begin(), animals.end(), [&](Animal *animal) {
+        return animal->getName() == name;
+    });
+
+    if (it != animals.end()) {
+        cout << "Animal found: " << (*it)->getName() << " (" << (*it)->getAge() << " years old)" << endl;
+    } else {
+        cout << "Animal not found." << endl;
+    }
+}
+
+void showAllEmployees(const vector<employee *> &employees) {
+    for (employee *emp : employees) {
+        cout << emp->getDetails() << endl;
+    }
+}
+
+void addEmployee(vector<employee *> &employees) {
+    string name, position, shift;
+    int employeeID;
+    double salary;
+
+    cout << "Enter name: ";
+    cin >> ws;
+    getline(cin, name);
+    cout << "Enter employee ID: ";
+    cin >> employeeID;
+    cout << "Enter position: ";
+    cin >> ws;
+    getline(cin, position);
+    cout << "Enter salary: ";
+    cin >> salary;
+    cout << "Enter shift: ";
+    cin >> ws;
+    getline(cin, shift);
+
+    employees.push_back(new employee(name, employeeID, position, salary, shift));
+}
+
+void removeEmployee(vector<employee *> &employees) {
+    int employeeID;
+    cout << "Enter the employee ID to remove: ";
+    cin >> employeeID;
+
+    auto it = remove_if(employees.begin(), employees.end(), [&](employee *emp) {
+        return emp->getEmployeeID() == employeeID;
+    });
+
+    if (it != employees.end()) {
+        delete *it;
+        employees.erase(it, employees.end());
+        cout << "Employee removed." << endl;
+    } else {
+        cout << "Employee not found." << endl;
+    }
+}
+
+void searchEmployee(const vector<employee *> &employees) {
+    int employeeID;
+    cout << "Enter the employee ID to search: ";
+    cin >> employeeID;
+
+    auto it = find_if(employees.begin(), employees.end(), [&](employee *emp) {
+        return emp->getEmployeeID() == employeeID;
+    });
+
+    if (it != employees.end()) {
+        cout << "Employee found: " << (*it)->getDetails() << endl;
+    } else {
+        cout << "Employee not found." << endl;
+    }
+}
+
+void showAllVisitors(const vector<Visitor> &visitors) {
+    for (const Visitor &visitor : visitors) {
+        cout << "Name: " << visitor.getName() << "\nAge: " << visitor.getAge() << "\nTicket Type: " << visitor.getTicketType() << "\nEntry Time: " << visitor.getEntryTime() << endl;
+    }
+}
+
+void addVisitor(vector<Visitor> &visitors) {
+    string name, ticketType, entryTime;
+    int age;
+
+    cout << "Enter name: ";
+    cin >> ws;
+    getline(cin, name);
+    cout << "Enter age: ";
+    cin >> age;
+    cout << "Enter ticket type: ";
+    cin >> ws;
+    getline(cin, ticketType);
+    cout << "Enter entry time: ";
+    getline(cin, entryTime);
+
+    visitors.push_back(Visitor(name, age, ticketType, entryTime));
+}
+
+void removeVisitor(vector<Visitor> &visitors) {
+    string name;
+    cout << "Enter the name of the visitor to remove: ";
+    cin >> ws;
+    getline(cin, name);
+
+    auto it = remove_if(visitors.begin(), visitors.end(), [&](const Visitor &visitor) {
+        return visitor.getName() == name;
+    });
+
+    if (it != visitors.end()) {
+        visitors.erase(it, visitors.end());
+        cout << "Visitor removed." << endl;
+    } else {
+        cout << "Visitor not found." << endl;
+    }
+}
+
+void searchVisitor(const vector<Visitor> &visitors) {
+    string name;
+    cout << "Enter the name of the visitor to search: ";
+    cin >> ws;
+    getline(cin, name);
+
+    auto it = find_if(visitors.begin(), visitors.end(), [&](const Visitor &visitor) {
+        return visitor.getName() == name;
+    });
+
+    if (it != visitors.end()) {
+        cout << "Visitor found: " << "Name: " << it->getName() << "\nAge: " << it->getAge() << "\nTicket Type: " << it->getTicketType() << "\nEntry Time: " << it->getEntryTime() << endl;
+    } else {
+        cout << "Visitor not found." << endl;
+    }
+}
+
+void showAllCages(const vector<Cage *> &cages) {
+    if (cages.empty()) {
+        cout << "No cages available." << endl;
+        return;
+    }
+    for (const auto &cage : cages) {
+        cout << "Cage Number: " << cage->getCageNumber() << ", Type: " << cage->getAnimalType() << ", Capacity: " << cage->getCapacity() << ", Animals Count: " << cage->getAnimalCount() << endl;
+        cage->listAnimals();
+    }
+}
+
+void addCage(vector<Cage *> &cages) {
+    int cageNumber, capacity;
+    string animalType;
+
+    cout << "Enter cage number: ";
+    cin >> cageNumber;
+    cout << "Enter animal type: ";
+    cin >> ws;
+    getline(cin, animalType);
+    cout << "Enter capacity: ";
+    cin >> capacity;
+
+    cages.push_back(new Cage(cageNumber, animalType, capacity));
+}
+
+void removeCage(vector<Cage *> &cages) {
+    int cageNumber;
+    cout << "Enter the cage number to remove: ";
+    cin >> cageNumber;
+
+    auto it = remove_if(cages.begin(), cages.end(), [cageNumber](Cage *cage) {
+        if (cage->getCageNumber() == cageNumber) {
+            delete cage;
+            return true;
+        }
+        return false;
+    });
+
+    if (it != cages.end()) {
+        cages.erase(it, cages.end());
+        cout << "Cage " << cageNumber << " removed." << endl;
+    } else {
+        cout << "Cage " << cageNumber << " not found." << endl;
+    }
+}
+
+void searchCage(const vector<Cage *> &cages) {
+    int cageNumber;
+    cout << "Enter the cage number to search: ";
+    cin >> cageNumber;
+
+    auto it = find_if(cages.begin(), cages.end(), [cageNumber](Cage *cage) {
+        return cage->getCageNumber() == cageNumber;
+    });
+
+    if (it != cages.end()) {
+        cout << "Cage found: " << "Cage Number: " << (*it)->getCageNumber() << ", Type: " << (*it)->getAnimalType() << ", Capacity: " << (*it)->getCapacity() << ", Animals Count: " << (*it)->getAnimalCount() << endl;
+        (*it)->listAnimals();
+    } else {
+        cout << "Cage not found." << endl;
+    }
+}
+
+int main() {
+    vector<Animal *> animals;
+    vector<Cage *> cages;
+    vector<employee *> employees;
+    vector<Visitor> visitors;
+
+    // Initialize some data
     animals.push_back(new Mammal("> Lion", "Panthera leo", 8, "Male"));
     animals.push_back(new Mammal("> Tiger", "Panthera tigris", 12, "Female"));
     animals.push_back(new Mammal("> Elephant", "Elephas maximus", 10, "Male"));
-
-    // Create Bird objects
     animals.push_back(new Bird("> Indian Peafowl", "Pavo cristatus", 16, "Female"));
     animals.push_back(new Bird("> Bald Eagle", "Haliaeetus leucocephalus", 22, "Male"));
     animals.push_back(new Bird("> Flamingos", "Phoenicopteridae", 9, "Female"));
-
-    // Create Reptile objects
     animals.push_back(new Reptile("> Green Iguana", "Iguana iguana", 15, "Male"));
     animals.push_back(new Reptile("> Burmese Python", "Python bivittatus", 20, "Male"));
     animals.push_back(new Reptile("> Aldabra Giant Tortoise", "Aldabrachelys gigantea", 11, "Male"));
-
-    // Create Fish objects
     animals.push_back(new Fish("> Whale Shark", "Rhincodon typus", 70, "Female"));
     animals.push_back(new Fish("> Sturgeon", "Acipenseridae", 82, "Female"));
     animals.push_back(new Fish("> Clownfish", "Amphiprioninae", 7, "Male"));
-
-    // Create Bug objects
     animals.push_back(new Bug("> Death's Head Cockroach", "Blaberus craniifer", 1, "Male"));
     animals.push_back(new Bug("> Mexican Red-kneed Tarantula", "Brachypelma smithi", 28, "Female"));
     animals.push_back(new Bug("> Leaf Cutter Ant", "Atta spp.", 14, "Female"));
 
-    // Sorting animals by age
     sort(animals.begin(), animals.end(), compareByAge);
 
-    // Display sorted animals by age
-    for (Animal *animal : animals)
-    {
-        cout << animal->getName() << " (" << animal->getAge() << " years old)" << endl;
-        animal->eat();
-        cout << "\n"
-             << endl;
-        animal->sleep();
-        cout << "\n"
-             << endl;
-        animal->makeSound();
-        cout << "\n"
-             << endl;
-        cout << endl;
-    }
+    while (true) {
+        menu();
+        int option;
+        cout << "Enter your option: ";
+        cin >> option;
 
-    // Clean up dynamically allocated memory
-    for (Animal *animal : animals)
-    {
-        delete animal;
+        switch (option) {
+        case 1:
+            showAllAnimals(animals);
+            break;
+        case 2:
+            showAllCages(cages);
+            break;
+        case 3:
+            showAllEmployees(employees);
+            break;
+        case 4:
+            showAllVisitors(visitors);
+            break;
+        case 5:
+            addAnimal(animals);
+            break;
+        case 6:
+            removeAnimal(animals);
+            break;
+        case 7:
+            searchAnimal(animals);
+            break;
+        case 8:
+            addCage(cages);
+            break;
+        case 9:
+            removeCage(cages);
+            break;
+        case 10:
+            searchCage(cages);
+            break;
+        case 11:
+            addEmployee(employees);
+            break;
+        case 12:
+            removeEmployee(employees);
+            break;
+        case 13:
+            searchEmployee(employees);
+            break;
+        case 14:
+            addVisitor(visitors);
+            break;
+        case 15:
+            removeVisitor(visitors);
+            break;
+        case 16:
+            searchVisitor(visitors);
+            break;
+        case 17:
+            sort(animals.begin(), animals.end(), compareByAge);
+            cout << "Animals sorted by age." << endl;
+            break;
+        case 0:
+            for (Animal *animal : animals) {
+                delete animal;
+            }
+            for (employee *emp : employees) {
+                delete emp;
+            }
+            for (Cage *cage : cages) {
+                delete cage;
+            }
+            return 0;
+        default:
+            cout << "Invalid option!" << endl;
+        }
     }
 
     return 0;
