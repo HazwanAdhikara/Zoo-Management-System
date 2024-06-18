@@ -15,6 +15,15 @@ string Animal::getName() const
     return this->name;
 }
 
+string Animal::getSpecies() const
+{
+    return this->species;
+}
+
+string Animal::getGender() const
+{
+    return this->gender;
+}
 int Animal::getAge() const
 {
     return this->age;

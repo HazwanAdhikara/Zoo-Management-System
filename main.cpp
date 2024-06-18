@@ -9,6 +9,60 @@
 
 using namespace std;
 
+vector<Animal *> animals;
+vector<Cage *> cages;
+
+void showAllCages()
+{
+    if (cages.empty())
+    {
+        cout << "No cages available." << endl;
+        return;
+    }
+    for (const auto &cage : cages)
+    {
+        cout << "Cage Number: " << cage->getCageNumber() << ", Type: " << cage->getAnimalType() << ", Capacity: " << cage->getCapacity() << ", Animals Count: " << cage->getAnimalCount() << endl;
+        cage->listAnimals();
+    }
+}
+
+void addCage(Cage *cage)
+{
+    cages.push_back(cage);
+}
+
+void removeCage(int cageNumber)
+{
+    auto it = remove_if(cages.begin(), cages.end(), [cageNumber](Cage *cage)
+                        {
+        if (cage->getCageNumber() == cageNumber) {
+            delete cage;
+            return true;
+        }
+        return false; });
+    if (it != cages.end())
+    {
+        cages.erase(it, cages.end());
+        cout << "Cage " << cageNumber << " removed." << endl;
+    }
+    else
+    {
+        cout << "Cage " << cageNumber << " not found." << endl;
+    }
+}
+
+Cage *searchCage(int cageNumber)
+{
+    for (auto &cage : cages)
+    {
+        if (cage->getCageNumber() == cageNumber)
+        {
+            return cage;
+        }
+    }
+    cout << "Cage " << cageNumber << " not found." << endl;
+    return nullptr;
+}
 void menu()
 {
     cout << "\n";
@@ -40,7 +94,6 @@ bool compareByAge(Animal *a, Animal *b)
 
 int main()
 {
-    vector<Animal *> animals;
 
     // Create Mammal objects
     animals.push_back(new Mammal("> Lion", "Panthera leo", 8, "Male"));

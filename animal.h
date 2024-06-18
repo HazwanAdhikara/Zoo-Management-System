@@ -19,6 +19,8 @@ public:
 
     void setName(const string &name);
     string getName() const;
+    string getSpecies() const;
+    string getGender() const;
     int getAge() const;
 
     virtual void eat();
