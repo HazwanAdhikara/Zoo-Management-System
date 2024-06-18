@@ -41,7 +41,7 @@ void menuSort()
     cout << "> Which one do you want to sort? < \n";
     cout << "Option 1 : Sort Animals Age \n";
     cout << "Option 2 : Sort Cage Capacity \n";
-    cout << "Option 3 : Sort Employee Salary \n";
+    cout << "Option 3 : Sort Employee ID \n";
     cout << "Option 4 : Sort Visitor Age \n";
     cout << "Option 0 : Exit \n";
 }
@@ -54,6 +54,15 @@ bool compareByAge(Animal *a, Animal *b)
 bool compareByCapacity(Cage *a, Cage *b)
 {
     return a->getCapacity() < b->getCapacity();
+}
+bool compareByID(const unique_ptr<employee> &emp1, const unique_ptr<employee> &emp2)
+{
+    return emp1->getEmployeeID() < emp2->getEmployeeID();
+}
+
+bool compareByAge1(Visitor *a, Visitor *b)
+{
+    return a->getAge() < b->getAge();
 }
 
 // Animals
@@ -350,9 +359,9 @@ void initializeEmployees(vector<unique_ptr<employee>> &employees)
 {
     cout << "\n"
          << endl;
-    employees.push_back(unique_ptr<employee>(new Zookeeper("Alice", 1, "Zookeeper", "30000", "Day")));
+    employees.push_back(unique_ptr<employee>(new Zookeeper("Alice", 3, "Zookeeper", "30000", "Day")));
     employees.push_back(unique_ptr<employee>(new Veterinarian("Bob", 2, "Veterinarian", "50000", "Night")));
-    employees.push_back(unique_ptr<employee>(new Manager("Charlie", 3, "Manager", "70000", "Day")));
+    employees.push_back(unique_ptr<employee>(new Manager("Charlie", 1, "Manager", "70000", "Day")));
 }
 
 void showAllEmployees(const vector<unique_ptr<employee>> &employees)
@@ -485,6 +494,22 @@ void searchEmployee(const vector<unique_ptr<employee>> &employees)
     }
 }
 
+
+void sortID(const vector<unique_ptr<employee>> &employees)
+{
+    if (employees.empty())
+    {
+        cout << "No employees in the zoo." << endl;
+        return;
+    }
+    for (const auto &emp : employees)
+    {
+        cout << "> " << emp->getName() << ", Employee ID: " << emp->getEmployeeID() << endl;
+    }
+}
+
+
+// Visitors
 void initializeVisitors(std::vector<Visitor *> &visitors)
 {
     visitors.push_back(new ChildVisitor("Alice", 8, "Child Ticket", "09:00"));
@@ -601,6 +626,20 @@ void searchVisitor(std::vector<Visitor *> &visitors)
     }
 }
 
+void sortVisitor(std::vector<Visitor *> &visitors)
+{
+    if (visitors.empty())
+    {
+        cout << "No visitors in the zoo." << endl;
+        return;
+    }
+    for (Visitor *visitor : visitors)
+    {
+        cout << "> " << visitor->getName() << ", Age: " << visitor->getAge() << endl;
+        
+    }
+}
+
 int main()
 {
     vector<Animal *> animals;
@@ -694,10 +733,12 @@ int main()
                     sortCages(cages);
                     continue;
                 case 3:
-                    // code for option 3
+                    sort(employees.begin(), employees.end(), compareByID);
+                    sortID(employees);
                     continue;
                 case 4:
-                    // code for option 4
+                    sort(visitors.begin(), visitors.end(), compareByAge1);
+                    sortVisitor(visitors);
                     continue;
                 case 0:
                     cout << "Returning to main menu. \n"
